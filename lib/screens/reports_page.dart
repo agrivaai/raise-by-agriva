@@ -1,18 +1,4 @@
 import 'package:flutter/material.dart';
-
-class ReportsPage extends StatelessWidget {
-  const ReportsPage({super.key});
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Reports', style: TextStyle(fontWeight: FontWeight.w700))),
-    body: ListView(padding: const EdgeInsets.all(16), children: [
-      Card(child: ListTile(
-        leading: const CircleAvatar(child: Icon(Icons.history)),
-        title: const Text('No saved reports yet'),
-        subtitle: const Text('Your completed rice plant screenings will appear here.'),
-      )),
-      const SizedBox(height: 14),
-      const Text('Reports will include health status, confidence, severity, observations and next steps.', style: TextStyle(fontSize: 13)),
-    ]),
-  );
-}
+import '../services/local_store.dart';
+class ReportsPage extends StatefulWidget { const ReportsPage({super.key}); @override State<ReportsPage> createState()=>_ReportsPageState(); }
+class _ReportsPageState extends State<ReportsPage>{List<Map<String,dynamic>> reports=[];bool loading=true;@override void initState(){super.initState();load();}Future<void>load()async{final x=await LocalStore.getReports();if(mounted)setState((){reports=x;loading=false;});}@override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Reports',style:TextStyle(fontWeight:FontWeight.w700)),actions:[IconButton(onPressed:load,icon:const Icon(Icons.refresh))]),body:loading?const Center(child:CircularProgressIndicator()):reports.isEmpty?const Center(child:Text('No saved reports yet.')):ListView.builder(padding:const EdgeInsets.all(16),itemCount:reports.length,itemBuilder:(_,i){final r=reports[i];return Card(child:ListTile(leading:const CircleAvatar(child:Icon(Icons.assessment)),title:Text(r['healthStatus']??'Unknown',style:const TextStyle(fontWeight:FontWeight.w700)),subtitle:Text((r['issue']??'No issue').toString())));}));}
