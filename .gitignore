@@ -1,11 +1,11 @@
-# Flutter/Dart
-.dart_tool/
-.packages
-.pub-cache/
+node_modules/
+.next/
+.netlify/
+dist/
 build/
-.flutter-plugins
-.flutter-plugins-dependencies
-.pub/
-.idea/
-*.iml
-.DS_Store
+.env
+.env.*
+!.env.example
+coverage/
+*.log
+src/payload-types.ts
